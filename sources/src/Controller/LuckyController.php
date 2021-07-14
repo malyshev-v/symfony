@@ -12,4 +12,11 @@ class LuckyController
     public function testAction() {
         echo 'This is the test action in lucky controller.';
     }
+
+    /**
+     * @Route ("/lucky/number", name="lucky_number")
+     */
+    public function numberAction() {
+        echo 'Number action';
+    }
 }
