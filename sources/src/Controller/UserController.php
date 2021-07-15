@@ -11,5 +11,6 @@ class UserController
      */
     public function testAction() {
         echo 'This is the test action in user controller.';
+        die;
     }
 }

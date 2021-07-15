@@ -11,6 +11,7 @@ class LuckyController
      */
     public function testAction() {
         echo 'This is the test action in lucky controller.';
+        die;
     }
 
     /**
@@ -18,5 +19,6 @@ class LuckyController
      */
     public function numberAction() {
         echo 'Number action';
+        die;
     }
 }
