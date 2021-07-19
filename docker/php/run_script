@@ -1,0 +1,25 @@
+#!/bin/bash
+RED='\033[0;31m'
+NC='\033[0m'
+
+
+
+printf "╔═══╦══╦══╗╔═══╦═══╦══╦╗╔╦═══╗\n"
+printf "║╔═╗╠╗╔╣╔╗║║╔══╣╔═╗║╔╗║║║║╔═╗║\n"
+printf "║╚═╝║║║║║║║║║╔═╣╚═╝║║║║║║║╚═╝║\n"
+printf "║╔══╝║║║║║║║║╚╗║╔╗╔╣║║║║║║╔══╝\n"
+printf "║║──╔╝╚╣╚╝║║╚═╝║║║║║╚╝║╚╝║║\n"
+printf "╚╝──╚══╩══╝╚═══╩╝╚╝╚══╩══╩╝\n"
+
+
+if [ ! -d "/var/www/html/vendor" ]; then
+    printf "${RED}File vendor is not find \n"
+    printf "${RED}The file vendor will be created ${NC} \n "
+        cd /var/www/html
+        composer install
+        php artisan key:generate
+    else
+        composer update
+fi
+
+supervisord
