@@ -7,9 +7,9 @@ services:
     volumes:
       - ../:/var/www/html
     ports:
-      - 8099:80
+      - 8098:80
     environment:
-      WEB_DOCUMENT_ROOT: /var/www/html/sources/public
+      WEB_DOCUMENT_ROOT: /var/www/html/sources/public/
       WEB_DOCUMENT_INDEX: index.php
       PHP_MEMORY_LIMIT: 4096M
       PHP_UPLOAD_MAX_FILESIZE: 512M
