@@ -2,15 +2,23 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class UserController
+/**
+ * Class UserController
+ * @package App\Controller
+ *
+ * @Route ("/user")
+ */
+class UserController extends AbstractController
 {
     /**
-     * @Route ("/user/test", name="user_test")
+     * @Route ("/test", name="user_test")
      */
-    public function testAction() {
-        echo 'This is the test action in user controller.';
-        die;
+    public function testAction() : Response
+    {
+        return $this->render('user/test.html.twig');
     }
 }

@@ -6,27 +6,32 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+/**
+ * Class LuckyController
+ * @package App\Controller
+ *
+ * @Route ("/lucky")
+ */
 class LuckyController extends AbstractController
 {
     /**
-     * @Route ("/lucky/test", name="lucky_test")
+     * @Route ("/test", name="lucky_test")
      */
     public function testAction() : Response
     {
-        return $this->render('test.html.twig');
+        return $this->render('lucky/test.html.twig');
     }
 
     /**
-     * @Route ("/lucky/number", name="lucky_number")
+     * @Route ("/number", name="lucky_number")
      */
-    public function numberAction()
+    public function numberAction() : Response
     {
-        echo 'Number action';
-        die;
+        return new Response('Number action!');
     }
 
     /**
-     * @Route ("/lucky/index", name="lucky_index")
+     * @Route ("/index", name="lucky_index")
      */
     public function indexAction() : Response
     {
