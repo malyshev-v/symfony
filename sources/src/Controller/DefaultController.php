@@ -16,6 +16,8 @@ class DefaultController extends  AbstractController
 {
     /**
      * @Route ("/", name="default_index")
+     *
+     * @return Response
      */
     public function indexAction() : Response
     {
@@ -34,6 +36,27 @@ class DefaultController extends  AbstractController
         return $this->render('default/index.html.twig', [
             'c' => $c,
             'userName' => $userName,
+            'users' => $users
         ]);
+    }
+
+    /**
+     * @Route ("/about", name="default_about")
+     *
+     * @return Response
+     */
+    public function aboutAction() : Response
+    {
+        return $this->render('default/about.html.twig');
+    }
+
+    /**
+     * @Route ("/feedback", name="default_feedback")
+     *
+     * @return Response
+     */
+    public function feedbackAction() : Response
+    {
+        return $this->render('default/feedback.html.twig');
     }
 }

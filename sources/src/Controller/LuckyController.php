@@ -15,7 +15,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class LuckyController extends AbstractController
 {
     /**
+     * @Route ("/index", name="lucky_index")
+     *
+     * @return Response
+     */
+    public function indexAction() : Response
+    {
+        return $this->render('lucky/index.html.twig');
+    }
+
+    /**
      * @Route ("/test", name="lucky_test")
+     *
+     * @return Response
      */
     public function testAction() : Response
     {
@@ -24,17 +36,11 @@ class LuckyController extends AbstractController
 
     /**
      * @Route ("/number", name="lucky_number")
+     *
+     * @return Response
      */
     public function numberAction() : Response
     {
-        return new Response('Number action!');
-    }
-
-    /**
-     * @Route ("/index", name="lucky_index")
-     */
-    public function indexAction() : Response
-    {
-        return $this->render('lucky/index.html.twig');
+        return $this->render('lucky/number.html.twig');
     }
 }
