@@ -20,7 +20,7 @@
                 {% for post in posts %}
                 <article class="blog-post">
                     <h2 class="blog-post-title">{{ post.name }}</h2>
-                    <p class="blog-post-meta">{{ post.published_at|date("%Y%m%d") }} by <a href="#">{{ }}</a></p>
+                    <p class="blog-post-meta">{{ post.published_at|date("Y-m-d") }} by <a href="#">{{ post.published_by }}</a></p>
 
                     <p>{{ post.description }}</p>
                 </article>

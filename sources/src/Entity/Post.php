@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Post
 {
     /**
+     * @var integer
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -18,27 +19,31 @@ class Post
     private $id;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=255)
      */
     private $description;
 
     /**
+     * @var date
      * @ORM\Column(type="date")
      */
     private $published_at;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=255)
      */
     private $published_by;
 
     /**
-     * @return int|null
+     * @return integer|null
      */
     public function getId(): ?int
     {
@@ -84,9 +89,9 @@ class Post
     }
 
     /**
-     * @return string|null
+     * @return object
      */
-    public function getPublishedAt(): ?string
+    public function getPublished_at(): ?object
     {
         return $this->published_at;
     }
@@ -95,7 +100,7 @@ class Post
      * @param string $published_at
      * @return $this
      */
-    public function setPublishedAt(string $published_at): self
+    public function setPublished_at(string $published_at): self
     {
         $this->published_at = $published_at;
 
@@ -105,7 +110,7 @@ class Post
     /**
      * @return string|null
      */
-    public function getPublishedBy(): ?string
+    public function getPublished_by(): ?string
     {
         return $this->published_by;
     }
@@ -114,7 +119,7 @@ class Post
      * @param string $published_by
      * @return $this
      */
-    public function setPublishedBy(string $published_by): self
+    public function setPublished_by(string $published_by): self
     {
         $this->published_by = $published_by;
 

@@ -24,7 +24,6 @@ class DefaultController extends AbstractController
     {
         $em = $this->getDoctrine()->getManager();
         $posts = $em->getRepository(Post::class)->findAll();
-        dd($posts);
 
         return $this->render('default/index.html.twig', [
             'posts' => $posts,
