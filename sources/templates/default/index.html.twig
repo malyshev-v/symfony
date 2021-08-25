@@ -19,10 +19,13 @@
 
                 {% for post in posts %}
                 <article class="blog-post">
-                    <h2 class="blog-post-title">{{ post.name }}</h2>
-                    <p class="blog-post-meta">{{ post.published_at|date("Y-m-d") }} by <a href="#">{{ post.published_by }}</a></p>
+                    <h2 class="blog-post-title">{{ post.getName() }}</h2>
+                    <p class="blog-post-meta">{{ post.getPublishedAt|date("Y-m-d") }} by
+                        <a href="#">{{ post.getPublishedBy() }}, </a>
+                        <a href="{{ path('post_show', { post: post.getId() }) }}">Show</a>
+                    </p>
 
-                    <p>{{ post.description }}</p>
+                    <p>{{ post.getDescription() }}</p>
                 </article>
                 {% endfor %}
 

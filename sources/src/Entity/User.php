@@ -74,7 +74,7 @@ class User
      * @param string $name
      * @return $this
      */
-    public function setName(string $name): self
+    public function setName($name): self
     {
         $this->name = $name;
 
@@ -93,7 +93,7 @@ class User
      * @param string $age
      * @return $this
      */
-    public function setAge(string $age): self
+    public function setAge($age): self
     {
         $this->age = $age;
 
@@ -112,7 +112,7 @@ class User
      * @param string $sex
      * @return $this
      */
-    public function setSex(string $sex): self
+    public function setSex($sex): self
     {
         $this->sex = $sex;
 
@@ -131,7 +131,7 @@ class User
      * @param string $role
      * @return $this
      */
-    public function setRole(string $role): self
+    public function setRole($role): self
     {
         $this->role = $role;
 
@@ -150,7 +150,7 @@ class User
      * @param string $login
      * @return $this
      */
-    public function setLogin(string $login): self
+    public function setLogin($login): self
     {
         $this->login = $login;
 
@@ -169,7 +169,7 @@ class User
      * @param string $password
      * @return $this
      */
-    public function setPassword(string $password): self
+    public function setPassword($password): self
     {
         $this->password = $password;
 

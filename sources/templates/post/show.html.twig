@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+    <h2>Show {{ post.getName() }}</h2>
+    <div class="row">
+        <div class="col-4">
+            {{ post.getPublishedAt()|date('Y-m-d') }},
+            <a href="{{ path('post_edit', {post: post.getId()}) }}">Edit</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            {{ post.getDescription() }}
+        </div>
+    </div>
+{% endblock %}

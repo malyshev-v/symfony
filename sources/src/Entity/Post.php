@@ -31,7 +31,7 @@ class Post
     private $description;
 
     /**
-     * @var date
+     * @var \DateTime
      * @ORM\Column(type="date")
      */
     private $published_at;
@@ -62,7 +62,7 @@ class Post
      * @param string $name
      * @return $this
      */
-    public function setName(string $name): self
+    public function setName($name): self
     {
         $this->name = $name;
 
@@ -81,7 +81,7 @@ class Post
      * @param string $description
      * @return $this
      */
-    public function setDescription(string $description): self
+    public function setDescription($description): self
     {
         $this->description = $description;
 
@@ -91,16 +91,16 @@ class Post
     /**
      * @return object
      */
-    public function getPublished_at(): ?object
+    public function getPublishedAt(): ?object
     {
         return $this->published_at;
     }
 
     /**
-     * @param string $published_at
+     * @param \DateTime $published_at
      * @return $this
      */
-    public function setPublished_at(string $published_at): self
+    public function setPublishedAt(\DateTime $published_at): self
     {
         $this->published_at = $published_at;
 
@@ -110,7 +110,7 @@ class Post
     /**
      * @return string|null
      */
-    public function getPublished_by(): ?string
+    public function getPublishedBy(): ?string
     {
         return $this->published_by;
     }
@@ -119,7 +119,7 @@ class Post
      * @param string $published_by
      * @return $this
      */
-    public function setPublished_by(string $published_by): self
+    public function setPublishedBy($published_by): self
     {
         $this->published_by = $published_by;
 
