@@ -46,15 +46,12 @@ class PostController extends AbstractController
     /**
      * @Route ("/create", name="post_create")
      *
-     * @param Request $request
+     * @param Request         $request
      * @param LoggerInterface $logger
-     * @param SmsSender $smsSender
+     * @param SmsSender       $smsSender
      * @return Response
      */
-    public function createAction(
-        Request $request,
-        LoggerInterface $logger,
-        SmsSender $smsSender) : Response
+    public function createAction(Request $request, LoggerInterface $logger, SmsSender $smsSender) : Response
     {
         $logger->info('Run create post method');
         $post = new Post();
@@ -87,17 +84,13 @@ class PostController extends AbstractController
     /**
      * @Route ("/edit/{post}", name="post_edit")
      *
-     * @param Request $request
-     * @param Post $post
+     * @param Request                $request
+     * @param Post                   $post
      * @param EntityManagerInterface $em
-     * @param SmsSender $smsSender
+     * @param SmsSender              $smsSender
      * @return Response
      */
-    public function editAction(
-        Request $request,
-        Post $post,
-        EntityManagerInterface $em,
-        SmsSender $smsSender) : Response
+    public function editAction(Request $request, Post $post, EntityManagerInterface $em, SmsSender $smsSender) : Response
     {
         $postForm = $this->createForm(PostForm::class, $post);
 
@@ -136,9 +129,9 @@ class PostController extends AbstractController
     /**
      * @Route ("export/{post}", name="post_export")
      *
-     * @param Post $post
+     * @param Post           $post
      * @param PostRepository $postRepository
-     * @param Request $request
+     * @param Request        $request
      * @return Response
      */
     public function exportAction(Post $post, PostRepository $postRepository, Request $request)

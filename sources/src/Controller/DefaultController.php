@@ -18,6 +18,7 @@ class DefaultController extends AbstractController
     /**
      * @Route ("/", name="default_index")
      *
+     * @param PostRepository $postRepository
      * @return Response
      */
     public function indexAction(PostRepository $postRepository) : Response

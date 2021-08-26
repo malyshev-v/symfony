@@ -15,7 +15,7 @@ class PostExporter
 {
     /**
      * @param PostRepository $postRepository
-     * @param $postId
+     * @param integer        $postId
      * @return Post|null
      */
     public function readPostFromDb(PostRepository $postRepository, $postId): ?Post
@@ -25,14 +25,14 @@ class PostExporter
 
     /**
      * @param PostRepository $postRepository
-     * @param $postId
-     * @param $format
+     * @param integer        $postId
+     * @param string         $format
      * @return Response|void
      */
     public function writeInFile(PostRepository $postRepository, $postId, $format)
     {
         if ($format == ('txt' || 'html')) {
-            $this->file_force_contents(
+            $this->fileForceContents(
                 __DIR__ . '/../../public/' . $format . '/TextDataFromPost#' . $postId . '__' . (new \DateTime())->format('Y/m/d-H_i_s') . '.' . $format,
                 $this->readPostFromDb($postRepository, $postId)->getDescription()
             );
@@ -42,16 +42,21 @@ class PostExporter
     }
 
     /**
-     * @param $dir
-     * @param $contents
+     * @param string       $dir
+     * @param string|array $contents
+     *
+     * @return void
      */
-    public function file_force_contents($dir, $contents)
+    public function fileForceContents($dir, $contents)
     {
         $parts = explode('/', $dir);
         $file = array_pop($parts);
         $dir = '';
-        foreach ($parts as $part)
-            if (!is_dir($dir .= "/$part")) mkdir($dir);
-        file_put_contents("$dir/$file", $contents);
+        foreach ($parts as $part) {
+            if (!is_dir($dir .= '/' . $part)) {
+                mkdir($dir);
+            }
+        }
+        file_put_contents('$dir/$file', $contents);
     }
 }
