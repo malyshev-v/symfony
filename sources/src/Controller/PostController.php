@@ -3,6 +3,11 @@
 namespace App\Controller;
 
 use App\Form\PostForm;
+use App\Repository\PostRepository;
+use App\Service\PostExporter;
+use App\Service\SmsSender;
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,10 +47,16 @@ class PostController extends AbstractController
      * @Route ("/create", name="post_create")
      *
      * @param Request $request
+     * @param LoggerInterface $logger
+     * @param SmsSender $smsSender
      * @return Response
      */
-    public function createAction(Request $request) : Response
+    public function createAction(
+        Request $request,
+        LoggerInterface $logger,
+        SmsSender $smsSender) : Response
     {
+        $logger->info('Run create post method');
         $post = new Post();
         $post->setName('New post23');
         $post->setPublishedAt(new \DateTime());
@@ -54,9 +65,13 @@ class PostController extends AbstractController
 
         $postForm->handleRequest($request);
         if ($postForm->isSubmitted() && $postForm->isValid()) {
+            $logger->info('Form is valid');
             $em = $this->getDoctrine()->getManager();
             $em->persist($post);
             $em->flush();
+            $logger->info('Post saved');
+
+            $smsSender->sendNotificationCreate('1234567890');
 
             return $this->redirectToRoute('post_show', [
                 'post' => $post->getId(),
@@ -73,12 +88,17 @@ class PostController extends AbstractController
      * @Route ("/edit/{post}", name="post_edit")
      *
      * @param Request $request
-     * @param Post    $post
+     * @param Post $post
+     * @param EntityManagerInterface $em
+     * @param SmsSender $smsSender
      * @return Response
      */
-    public function editAction(Request $request, Post $post) : Response
+    public function editAction(
+        Request $request,
+        Post $post,
+        EntityManagerInterface $em,
+        SmsSender $smsSender) : Response
     {
-        $em = $this->getDoctrine()->getManager();
         $postForm = $this->createForm(PostForm::class, $post);
 
         $postForm->handleRequest($request);
@@ -86,6 +106,8 @@ class PostController extends AbstractController
             $record = $postForm->getData();
             $em->persist($record);
             $em->flush();
+
+            $smsSender->sendNotificationCreate('1234567890');
 
             return $this->redirectToRoute('post_show', [
                 'post' => $post->getId(),
@@ -109,5 +131,21 @@ class PostController extends AbstractController
         return $this->render('post/show.html.twig', [
             'post' => $post,
         ]);
+    }
+
+    /**
+     * @Route ("export/{post}", name="post_export")
+     *
+     * @param Post $post
+     * @param PostRepository $postRepository
+     * @param Request $request
+     * @return Response
+     */
+    public function exportAction(Post $post, PostRepository $postRepository, Request $request)
+    {
+        $postExporter = new PostExporter();
+        $postExporter->writeInFile($postRepository, $post->getId(), $request->request->get('download_in_format'));
+
+        return new Response('File saved');
     }
 }

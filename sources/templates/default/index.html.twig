@@ -24,8 +24,11 @@
                         <a href="#">{{ post.getPublishedBy() }}, </a>
                         <a href="{{ path('post_show', { post: post.getId() }) }}">Show</a>
                     </p>
-
                     <p>{{ post.getDescription() }}</p>
+                    <form action="{{ path('post_export', { post: post.getId() }) }}" method="post">
+                        <button name="download_in_format" value="txt" type="submit" class="btn btn-primary">Download in TXT</button>
+                        <button name="download_in_format" value="html" type="submit" class="btn btn-primary">Download in HTML</button>
+                    </form>
                 </article>
                 {% endfor %}
 

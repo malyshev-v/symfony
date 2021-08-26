@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
+use App\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Post;
 
 /**
  * Class DefaultController
@@ -20,10 +20,9 @@ class DefaultController extends AbstractController
      *
      * @return Response
      */
-    public function indexAction() : Response
+    public function indexAction(PostRepository $postRepository) : Response
     {
-        $em = $this->getDoctrine()->getManager();
-        $posts = $em->getRepository(Post::class)->findAll();
+        $posts = $postRepository->findAll(['published_at' => 'desc']);
 
         return $this->render('default/index.html.twig', [
             'posts' => $posts,
