@@ -16,6 +16,7 @@ use App\Entity\Post;
 
 /**
  * Class PostController
+ *
  * @package App\Controller
  *
  * @Route ("/post")
@@ -49,6 +50,7 @@ class PostController extends AbstractController
      * @param Request         $request
      * @param LoggerInterface $logger
      * @param SmsSender       $smsSender
+     *
      * @return Response
      */
     public function createAction(Request $request, LoggerInterface $logger, SmsSender $smsSender) : Response
@@ -88,6 +90,7 @@ class PostController extends AbstractController
      * @param Post                   $post
      * @param EntityManagerInterface $em
      * @param SmsSender              $smsSender
+     *
      * @return Response
      */
     public function editAction(Request $request, Post $post, EntityManagerInterface $em, SmsSender $smsSender) : Response
@@ -117,6 +120,7 @@ class PostController extends AbstractController
      * @Route ("/show/{post}", name="post_show")
      *
      * @param Post $post
+     *
      * @return Response
      */
     public function showAction(Post $post) : Response
@@ -127,14 +131,15 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route ("export/{post}", name="post_export")
+     * @Route ("/export/{post}", name="post_export")
      *
      * @param Post           $post
      * @param PostRepository $postRepository
      * @param Request        $request
+     *
      * @return Response
      */
-    public function exportAction(Post $post, PostRepository $postRepository, Request $request)
+    public function exportAction(Post $post, PostRepository $postRepository, Request $request): Response
     {
         $postExporter = new PostExporter();
         $postExporter->writeInFile($postRepository, $post->getId(), $request->request->get('download_in_format'));

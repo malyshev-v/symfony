@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Driver\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -50,4 +51,18 @@ class PostRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @return mixed
+     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
+     */
+    public function getPostsIds()
+    {
+        $query = 'SELECT id FROM post';
+
+        $stm = $this->getEntityManager()->getConnection()->prepare($query);
+        $stm->executeQuery();
+        return $stm->fetchAll();
+    }
 }

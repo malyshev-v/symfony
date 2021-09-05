@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * Class UserController
+ *
  * @package App\Controller
  *
  * @Route ("/user")

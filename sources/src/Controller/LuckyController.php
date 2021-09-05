@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Class LuckyController
+ *
  * @package App\Controller
  *
  * @Route ("/lucky")

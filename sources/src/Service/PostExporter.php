@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Entity\Post;
 use App\Repository\PostRepository;
-use http\Env\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class PostExporter
@@ -57,6 +57,6 @@ class PostExporter
                 mkdir($dir);
             }
         }
-        file_put_contents('$dir/$file', $contents);
+        file_put_contents("$dir/$file", $contents);
     }
 }
