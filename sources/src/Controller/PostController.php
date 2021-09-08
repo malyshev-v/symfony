@@ -142,7 +142,7 @@ class PostController extends AbstractController
     public function exportAction(Post $post, PostRepository $postRepository, Request $request): Response
     {
         $postExporter = new PostExporter();
-        $postExporter->writeInFile($postRepository, $post->getId(), $request->request->get('download_in_format'));
+        $postExporter->writeInFile($post, $request->request->get('download_in_format'));
 
         return new Response('File saved');
     }

@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class CreateTest extends WebTestCase
 {
+    use PostTrait;
+
     /**
      * @return void
      */
@@ -15,6 +17,27 @@ class CreateTest extends WebTestCase
         $crawler = $client->request('GET', '/post/create');
 
         $this->assertResponseIsSuccessful();
-//        $this->assertSelectorTextContains('h1', 'Hello World');
+    }
+
+    /**
+     * @return void
+     */
+    public function testRedirect(): void
+    {
+        $client = static::createClient();
+        $previousLastId = $this->getLastId();
+
+        $crawler = $client->request('GET', '/post/create');
+        $this->assertResponseIsSuccessful();
+
+        $form = $crawler->selectButton('Submit')->form();
+        $form['post_form[name]'] = 'post name from phpUnit test';
+        $form['post_form[description]'] = 'post description from phpUnit test';
+        $client->submit($form);
+
+        $currentLastId = $this->getLastId();
+
+        $this->assertTrue($currentLastId > $previousLastId);
+//        $this->assertResponseRedirects('/post/show/' . $currentLastId);
     }
 }

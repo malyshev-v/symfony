@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Post;
-use App\Repository\PostRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -14,27 +13,17 @@ use Symfony\Component\HttpFoundation\Response;
 class PostExporter
 {
     /**
-     * @param PostRepository $postRepository
-     * @param integer        $postId
-     * @return Post|null
-     */
-    public function readPostFromDb(PostRepository $postRepository, $postId): ?Post
-    {
-        return $postRepository->find($postId);
-    }
-
-    /**
-     * @param PostRepository $postRepository
-     * @param integer        $postId
-     * @param string         $format
+     * @param Post   $post
+     * @param string $format
+     *
      * @return Response|void
      */
-    public function writeInFile(PostRepository $postRepository, $postId, $format)
+    public function writeInFile(Post $post, $format)
     {
-        if ($format == ('txt' || 'html')) {
+        if ($format == 'txt' || $format == 'html') {
             $this->fileForceContents(
-                __DIR__ . '/../../public/' . $format . '/TextDataFromPost#' . $postId . '__' . (new \DateTime())->format('Y/m/d-H_i_s') . '.' . $format,
-                $this->readPostFromDb($postRepository, $postId)->getDescription()
+                __DIR__ . '/../../public/' . $format . '/TextDataFromPost#' . $post->getId() . '__' . (new \DateTime())->format('Y/m/d-H_i_s') . '.' . $format,
+                $post->getDescription()
             );
         } else {
             return new Response('Invalid file extension');
@@ -51,12 +40,7 @@ class PostExporter
     {
         $parts = explode('/', $dir);
         $file = array_pop($parts);
-        $dir = '';
-        foreach ($parts as $part) {
-            if (!is_dir($dir .= '/' . $part)) {
-                mkdir($dir);
-            }
-        }
-        file_put_contents("$dir/$file", $contents);
+        mkdir($dir, 0777, true);
+        file_put_contents(sprintf('%s/%s', $dir, $file), $contents);
     }
 }

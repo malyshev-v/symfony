@@ -2,21 +2,11 @@
 
 namespace App\Tests\Controller\PostController;
 
-use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ShowTest extends WebTestCase
 {
-    /**
-     * @return mixed
-     */
-    public function getPostId()
-    {
-        $postRepository = static::getContainer()->get(PostRepository::class);
-        $postId = $postRepository->findOneBy([], ['id' => 'desc']);
-
-        return $postId->getId();
-    }
+    use PostTrait;
 
     /**
      * @return void
@@ -24,7 +14,7 @@ class ShowTest extends WebTestCase
     public function testSomething(): void
     {
         $client = static::createClient();
-        $id = $this->getPostId();
+        $id = $this->getLastId();
         $uri = '/post/show/%d';
         $crawler = $client->request('GET', sprintf($uri, $id));
 
