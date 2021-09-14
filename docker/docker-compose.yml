@@ -11,23 +11,16 @@ services:
     environment:
       WEB_DOCUMENT_ROOT: /var/www/html/sources/public/
       # WEB_DOCUMENT_INDEX: index.php
-      PHP_MEMORY_LIMIT: 8G
-      PHP_UPLOAD_MAX_FILESIZE: 1G
-      PHP_POST_MAX_SIZE: 1G
+      PHP_MEMORY_LIMIT: 2048M
+      PHP_UPLOAD_MAX_FILESIZE: 512M
+      PHP_POST_MAX_SIZE: 512M
+      PHP_DATE_TIMEZONE: Europe/Kiev
       PHP_DISPLAY_ERRORS: 1
       php.xdebug.max_nesting_level: 500
-#    depends_on:
-#      - matr_mysql
-
-
-#  matr_mysql:
-#    build: ./mysql/
-#    container_name: matr_mysql
-#    environment:
-#      MYSQL_ROOT_PASSWORD: cacie_fcgd-cdaba
-#      MYSQL_DATABASE: matrix
-#    ports:
-#      - 3312:3306
+    networks:
+      - symf-blog-net
+    # depends_on:
+    #   - symf_blog_mysql
 
   symf_blog_mysql:
     build: ./mysql/
@@ -37,12 +30,12 @@ services:
       MYSQL_DATABASE: symf_blog
     ports:
       - 3107:3306
+    networks:
+      - symf-blog-net
 
-#  matrix_aff_mysql:
-#    build: ./mysql/
-#    container_name: matrix_aff_mysql
-#    environment:
-#      MYSQL_ROOT_PASSWORD: cbece_gead-cebfa
-#      MYSQL_DATABASE: matrix_aff
-#    ports:
-#      - 3107:3306
+
+networks:
+  symf-blog-net:
+
+  # networks:
+  #   - symf_blog_net

@@ -2,4 +2,34 @@
 
 {% block body %}
     <strong>Feedback page!</strong>
+    {{ form_start(form) }}
+
+    <div class="my-class">
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name) }}
+        {{ form_errors(form.name) }}
+        {{ form_help(form.name) }}
+    </div>
+    <div class="my-class">
+        {{ form_label(form.contacts) }}
+        {{ form_widget(form.contacts) }}
+        {{ form_errors(form.contacts) }}
+        {{ form_help(form.contacts) }}
+    </div>
+    <div class="my-class">
+        {{ form_label(form.description) }}
+        {{ form_widget(form.description) }}
+        {{ form_errors(form.description) }}
+        {{ form_help(form.description) }}
+    </div>
+
+    <button type="submit" class="btn btn-danger">Send form</button>
+    {{ form_end(form) }}
+
+    {% for message in app.flashes('notice') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+    {% endfor %}
+
 {% endblock %}
