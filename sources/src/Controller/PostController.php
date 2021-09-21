@@ -11,6 +11,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Post;
 
@@ -114,6 +117,40 @@ class PostController extends AbstractController
             'post' => $post,
             'postForm' => $postForm->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/delete/{post}", name="post_delete")
+     *
+     * @param Post $post
+     * @param EntityManagerInterface $em
+     * @param MailerInterface $mailer
+     *
+     * @return Response
+     * @throws TransportExceptionInterface
+     */
+    public function deleteAction(Post $post, EntityManagerInterface $em, MailerInterface $mailer): Response
+    {
+        $content = $this->renderView('email/delete.html.twig', [
+            'post' => $post,
+        ]);
+
+        $message = new Email();
+        $message->from('burm.courses@gmail.com');
+        $message->to('v.malyshev@piogroup.net');
+        $message->subject('Hello from Symfony!');
+        $message->text(
+            'Привет мой дорогой друг, тебе из проекта. Пост #'
+            . $post->getId() . ', был удален'
+        );
+        $message->html($content);
+
+        $mailer->send($message);
+
+        $em->remove($post);
+        $em->flush();
+
+        return $this->redirectToRoute('default_index');
     }
 
     /**

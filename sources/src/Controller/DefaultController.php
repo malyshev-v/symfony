@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Form\FeedbackForm;
 use App\Repository\PostRepository;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +22,14 @@ use Symfony\Component\Mime\Email;
  */
 class DefaultController extends AbstractController
 {
+    public function defaultLocaleAction(Request $request): RedirectResponse
+    {
+        $referer = $request->headers->get('referer');
+        return ($referer ? $this->redirect($referer) : $this->redirectToRoute('default_index'));
+//        return new RedirectResponse($referer);
+//        return (gettype($referer) == RedirectResponse::class ? $this->redirect($referer) : $this->redirectToRoute('default_index'));
+    }
+
     /**
      * @Route ("/", name="default_index")
      *
