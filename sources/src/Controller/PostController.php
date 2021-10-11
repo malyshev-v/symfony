@@ -8,6 +8,7 @@ use App\Service\PostExporter;
 use App\Service\SmsSender;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -88,6 +89,7 @@ class PostController extends AbstractController
 
     /**
      * @Route ("/edit/{post}", name="post_edit")
+     * @IsGranted("ROLE_ADMIN")
      *
      * @param Request                $request
      * @param Post                   $post

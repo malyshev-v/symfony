@@ -21,7 +21,7 @@ class PostForm extends AbstractType
     {
         $builder->add('name', TextType::class, [
             'required' => false,
-            'label' => 'Name',
+            'label'    => 'Name',
         ]);
         $builder->add('description', TextareaType::class);
         $builder->add('publishedAt', DateType::class, [

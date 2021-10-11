@@ -1,5 +1,23 @@
 {% extends 'layout.html.twig' %}
 
 {% block body %}
-    <strong>Signing in page!</strong>
+
+    {% if error %}
+        <div>{{ error.messageKey }}</div>
+    {% endif %}
+
+    <div class="col-4">
+        <form action="{{ path('login') }}" method="post">
+            <p>
+                Login: <input type="text" class="form-control" name="_username" value="{{ lastUsername }}">
+            </p>
+            <p>
+                Password:  <input type="password" class="form-control" name="_password">
+            </p>
+            <a href="{{ path('user_forgot') }}">Forgot your password?</a>
+
+            <button type="submit" class="btn btn-primary">Sign in</button>
+        </form>
+    </div>
+
 {% endblock %}

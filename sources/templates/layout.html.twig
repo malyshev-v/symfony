@@ -33,8 +33,13 @@
                         <a href="{{ path('default_index', {_locale: 'en'}) }}">EN</a>
                     </div>
                     <div class="col-4 d-flex justify-content-end align-items-center">
-                        <a class="btn btn-sm btn-outline-secondary" href="{{ path('user_signin') }}">{{ 'Sign in'|trans({}, 'post') }}</a>
-                        <a class="btn btn-sm btn-outline-secondary" href="{{ path('user_signup') }}">{{ 'Sign up'|trans({}, 'post') }}</a>
+                        {% if app.user %}
+                            Hello, {{ app.user }}
+                            <a class="btn btn-sm btn-outline-secondary" href="{{ path('logout') }}">{{ 'Sign out'|trans({}, 'post') }}</a>
+                        {% else %}
+                            <a class="btn btn-sm btn-outline-secondary" href="{{ path('login') }}">{{ 'Sign in'|trans({}, 'post') }}</a>
+                            <a class="btn btn-sm btn-outline-secondary" href="{{ path('register') }}">{{ 'Sign up'|trans({}, 'post') }}</a>
+                        {% endif %}
                     </div>
                 </div>
             </header>

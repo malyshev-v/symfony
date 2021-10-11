@@ -8,3 +8,7 @@ app:
   resource: ../src/Controller/*
   requirements:
     _locale: en|ru|uk|fr|de
+
+logout:
+  path: /logout
+  methods: GET

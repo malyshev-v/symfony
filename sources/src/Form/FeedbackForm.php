@@ -21,7 +21,7 @@ class FeedbackForm extends AbstractType
     {
         $builder->add('name', TextType::class, [
             'required' => true,
-            'label' => 'Name',
+            'label'    => 'Name',
         ]);
         $builder->add('contacts', TextType::class);
         $builder->add('description', TextareaType::class);

@@ -1,0 +1,31 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+
+<div class="row-cols-md-9">
+    {{ form_start(form) }}
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(form) }}
+    </div>
+    <div class="row">
+        <div class="col-4">
+            {{ form_row(form) }}
+        </div>
+    </div>
+    <div class="row">
+        {{ form_end(form) }}
+    </div>
+</div>
+
+{% for message in app.flashes('success') %}
+<div class="alert alert-success">
+    {{ message }}
+</div>
+{% endfor %}
+{% for message in app.flashes('error') %}
+<div class="alert alert-success">
+    {{ message }}
+</div>
+{% endfor %}
+
+{% endblock %}
