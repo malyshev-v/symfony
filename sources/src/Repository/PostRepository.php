@@ -22,32 +22,23 @@ class PostRepository extends ServiceEntityRepository
         parent::__construct($registry, Post::class);
     }
 
-    // /**
-    //  * @return Post[] Returns an array of Post objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Exception|\Exception|\mixed[][]
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function getForSubscription($daysCount)
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $query = 'SELECT * FROM post WHERE (CURRENT_TIMESTAMP - published_at) <= :daysCount';
 
-    /*
-    public function findOneBySomeField($value): ?Post
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        try {
+            $stm = $this->getEntityManager()->getConnection()->prepare($query);
+            $stm->bindValue(':daysCount', $daysCount);
+            $result = $stm->executeQuery();
+
+            return $result->fetchAllAssociative();
+        } catch (Exception $ex) {
+            return $ex;
+        }
     }
-    */
 }
