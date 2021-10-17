@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Event\PostCreatedEvent;
+use App\Event\PostDeletedEvent;
+use App\Event\PostEditedEvent;
 use App\Form\PostForm;
 use App\Repository\PostRepository;
 use App\Service\PostExporter;
@@ -9,6 +12,7 @@ use App\Service\SmsSender;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -51,13 +55,17 @@ class PostController extends AbstractController
     /**
      * @Route ("/create", name="post_create")
      *
-     * @param Request         $request
+     * @param Request $request
      * @param LoggerInterface $logger
-     * @param SmsSender       $smsSender
-     *
+     * @param SmsSender $smsSender
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      */
-    public function createAction(Request $request, LoggerInterface $logger, SmsSender $smsSender) : Response
+    public function createAction(
+        Request $request,
+        LoggerInterface $logger,
+        SmsSender $smsSender,
+        EventDispatcherInterface $eventDispatcher) : Response
     {
         $logger->info('Run create post method');
         $post = new Post();
@@ -75,6 +83,7 @@ class PostController extends AbstractController
             $logger->info('Post saved');
 
             $smsSender->sendNotificationCreate('1234567890');
+            $eventDispatcher->dispatch(new PostCreatedEvent($post), PostCreatedEvent::NAME);
 
             return $this->redirectToRoute('post_show', [
                 'post' => $post->getId(),
@@ -91,14 +100,19 @@ class PostController extends AbstractController
      * @Route ("/edit/{post}", name="post_edit")
      * @IsGranted("ROLE_ADMIN")
      *
-     * @param Request                $request
-     * @param Post                   $post
+     * @param Request $request
+     * @param Post $post
      * @param EntityManagerInterface $em
-     * @param SmsSender              $smsSender
-     *
+     * @param SmsSender $smsSender
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      */
-    public function editAction(Request $request, Post $post, EntityManagerInterface $em, SmsSender $smsSender) : Response
+    public function editAction(
+        Request $request,
+        Post $post,
+        EntityManagerInterface $em,
+        SmsSender $smsSender,
+        EventDispatcherInterface $eventDispatcher) : Response
     {
         $postForm = $this->createForm(PostForm::class, $post);
 
@@ -108,7 +122,7 @@ class PostController extends AbstractController
             $em->persist($record);
             $em->flush();
 
-            $smsSender->sendNotificationCreate('1234567890');
+            $eventDispatcher->dispatch(new PostEditedEvent(), PostEditedEvent::NAME);
 
             return $this->redirectToRoute('post_show', [
                 'post' => $post->getId(),
@@ -127,11 +141,15 @@ class PostController extends AbstractController
      * @param Post $post
      * @param EntityManagerInterface $em
      * @param MailerInterface $mailer
-     *
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      * @throws TransportExceptionInterface
      */
-    public function deleteAction(Post $post, EntityManagerInterface $em, MailerInterface $mailer): Response
+    public function deleteAction(
+        Post $post,
+        EntityManagerInterface $em,
+        MailerInterface $mailer,
+        EventDispatcherInterface $eventDispatcher): Response
     {
         $content = $this->renderView('email/delete.html.twig', [
             'post' => $post,
@@ -148,6 +166,7 @@ class PostController extends AbstractController
         $message->html($content);
 
         $mailer->send($message);
+        $eventDispatcher->dispatch(new PostDeletedEvent($post), PostDeletedEvent::NAME);
 
         $em->remove($post);
         $em->flush();
