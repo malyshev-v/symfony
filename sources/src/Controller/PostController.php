@@ -16,9 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Post;
 
@@ -82,7 +80,6 @@ class PostController extends AbstractController
             $em->flush();
             $logger->info('Post saved');
 
-            $smsSender->sendNotificationCreate('1234567890');
             $eventDispatcher->dispatch(new PostCreatedEvent($post), PostCreatedEvent::NAME);
 
             return $this->redirectToRoute('post_show', [
@@ -143,7 +140,6 @@ class PostController extends AbstractController
      * @param MailerInterface $mailer
      * @param EventDispatcherInterface $eventDispatcher
      * @return Response
-     * @throws TransportExceptionInterface
      */
     public function deleteAction(
         Post $post,
@@ -151,21 +147,6 @@ class PostController extends AbstractController
         MailerInterface $mailer,
         EventDispatcherInterface $eventDispatcher): Response
     {
-        $content = $this->renderView('email/delete.html.twig', [
-            'post' => $post,
-        ]);
-
-        $message = new Email();
-        $message->from('burm.courses@gmail.com');
-        $message->to('v.malyshev@piogroup.net');
-        $message->subject('Hello from Symfony!');
-        $message->text(
-            'Привет мой дорогой друг, тебе из проекта. Пост #'
-            . $post->getId() . ', был удален'
-        );
-        $message->html($content);
-
-        $mailer->send($message);
         $eventDispatcher->dispatch(new PostDeletedEvent($post), PostDeletedEvent::NAME);
 
         $em->remove($post);
